@@ -3,8 +3,8 @@ version: '3'
 
 services:
   snippet-permission:
-    container_name: "compose-api"
-    image: ghcr.io/ingsis-group-4/snippet-permission-dev:a74ca207
+    container_name: "snippet-permission"
+    image: ghcr.io/ingsis-group-4/snippet-permission-dev:latest
     ports:
       - "8080:8080"
     environment:
@@ -20,6 +20,7 @@ services:
     expose:
       - "8080"
   permissions-db:
+    container_name: "permissions-db"
     image: postgres:latest
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -37,7 +38,7 @@ services:
 
   snippet-manager:
     container_name: "snippet-manager"
-    image: ghcr.io/ingsis-group-4/snippet-manager-dev:f89598ab
+    image: ghcr.io/ingsis-group-4/snippet-manager-dev:latest
     ports:
       - "49160:5000"
     volumes:
@@ -49,7 +50,7 @@ services:
     container_name: "asset_service"
     image: ghcr.io/austral-ingsis/snippet-asset-service:latest
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       AZURE_HOST: "http://azurite"
 
@@ -69,9 +70,9 @@ services:
 
   snippet-runner:
     container_name: "snippet-runner"
-    image: ghcr.io/ingsis-group-4/snippet-runner-dev:0af38af9
+    image: ghcr.io/ingsis-group-4/snippet-runner-dev:latest
     ports:
-      - "8080:8080"
+      - "8082:8080"
     expose:
       - 8080
     volumes:
