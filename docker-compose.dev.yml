@@ -4,9 +4,7 @@ version: '3'
 services:
   snippet-permission:
     container_name: "compose-api"
-    build:
-      context: . #imagen desde git container registry
-      dockerfile: Dockerfile
+    image: ghcr.io/ingsis-group-4/snippet-permission-dev:a74ca207
     ports:
       - "8080:8080"
     environment:
@@ -39,9 +37,7 @@ services:
 
   snippet-manager:
     container_name: "snippet-manager"
-    build:
-      context: . #imagen desde git container registry
-      dockerfile: Dockerfile
+    image: ghcr.io/ingsis-group-4/snippet-manager-dev:f89598ab
     ports:
       - "49160:5000"
     volumes:
@@ -73,9 +69,7 @@ services:
 
   snippet-runner:
     container_name: "snippet-runner"
-    build:
-      context: . #imagen desde git container registry
-      dockerfile: Dockerfile
+    image: ghcr.io/ingsis-group-4/snippet-runner-dev:0af38af9
     ports:
       - "8080:8080"
     expose:
