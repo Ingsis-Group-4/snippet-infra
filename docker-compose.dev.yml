@@ -45,7 +45,7 @@ services:
         DB_PORT: ${MANAGER_DB_PORT}
         SNIPPET_RUNNER_SERVICE_URL: ${SNIPPET_RUNNER_SERVICE_URL}
     ports:
-      - "49160:5000"
+      - "49160:4322"
     volumes:
       - ./data:/app/data
     env_file:
