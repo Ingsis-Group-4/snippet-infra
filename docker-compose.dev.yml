@@ -7,6 +7,8 @@ services:
         - "443:443"
       volumes:
         - ./conf.d:/etc/nginx/conf.d:ro
+        - ./certbot/www:/var/www/certbot/:ro
+        - ./certbot/conf/:/etc/nginx/ssl/:ro
       depends_on:
         - snippet-permission
         - permissions-db
@@ -16,6 +18,7 @@ services:
         - azurite-manager
         - api-manager
         - duckdns
+        - certbot
   snippet-permission:
     container_name: "snippet-permission"
     image: ghcr.io/ingsis-group-4/snippet-permission-dev:latest
@@ -119,6 +122,13 @@ services:
       - SUBDOMAINS=snippet-searcher-dev
       - TOKEN= ${DUCK_DNS_TOKEN}
     restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ${CERTBOT_EMAIL} --agree-tos --force-renewal -d ${CERTBOT_DOMAIN}
 
 
 volumes:
