@@ -18,7 +18,6 @@ services:
         - azurite-manager
         - api-manager
         - duckdns
-        - certbot
   snippet-permission:
     container_name: "snippet-permission"
     image: ghcr.io/ingsis-group-4/snippet-permission-dev:latest
