@@ -1,9 +1,26 @@
 services:
+  proxy:
+      image: nginx
+      container_name: "reverse-proxy"
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./conf.d:/etc/nginx/conf.d:ro
+        - ./certbot/conf:/etc/letsencrypt
+        - ./certbot/www:/var/www/certbot
+      depends_on:
+        - snippet-permission
+        - permissions-db
+        - snippet-manager
+        - manager-db
+        - snippet-runner
+        - azurite-manager
+        - api-manager
+        - duckdns
   snippet-permission:
     container_name: "snippet-permission"
     image: ghcr.io/ingsis-group-4/snippet-permission-dev:latest
-    ports:
-      - "8080:8080"
     environment:
       DB_USERNAME: ${PERMISSION_POSTGRES_USER}
       DB_PASSWORD: ${PERMISSION_POSTGRES_PASSWORD}
@@ -44,12 +61,12 @@ services:
         DB_HOST: ${MANAGER_DB_HOST}
         DB_PORT: ${MANAGER_DB_PORT}
         SNIPPET_RUNNER_SERVICE_URL: ${SNIPPET_RUNNER_SERVICE_URL}
-    ports:
-      - "49160:4322"
     volumes:
       - ./data:/app/data
     env_file:
       - .env
+    expose:
+      - "4322"
 
   api-manager:
     container_name: "asset_service"
@@ -87,18 +104,31 @@ services:
     expose:
       - "5432"
 
-
   snippet-runner:
     container_name: "snippet-runner"
     image: ghcr.io/ingsis-group-4/snippet-runner-dev:latest
-    ports:
-      - "8082:8080"
     expose:
       - 8080
     volumes:
       - .:/app/data
     env_file:
       - .env
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:version-d63af1c1
+    container_name: duckdns
+    environment:
+      - SUBDOMAINS=snippet-searcher-dev
+      - TOKEN=${DUCK_DNS_TOKEN}
+    restart: unless-stopped
+
+  certbot:
+    container_name: "certbot"
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot/ --force-renewal --email ${CERTBOT_EMAIL} -d ${CERTBOT_DOMAIN} --agree-tos
 
 
 volumes:
