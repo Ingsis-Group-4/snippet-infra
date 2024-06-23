@@ -134,7 +134,7 @@ services:
     container_name: "printscript-ui"
     image: ghcr.io/ingsis-group-4/printscript-ui-dev:latest
     env_file:
-      - .env_ui
+      - .env
     expose:
       - "80"
 
