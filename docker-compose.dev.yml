@@ -138,6 +138,12 @@ services:
     expose:
       - "80"
 
+  redis:
+    container_name: "redis"
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+      
 volumes:
   permissions-db:
   manager-db:
