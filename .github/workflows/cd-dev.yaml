@@ -1,0 +1,22 @@
+name: "Continuous Deployment to dev"
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  update_infra:
+    name: Update Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update and Restart Infrastructure
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_URL }}
+          username: "snippet-searcher-admin"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd snippet-infra
+            docker compose -f docker-compose.dev.yml down
+            git pull
+            docker compose -f docker-compose.dev.yml up -d --build
