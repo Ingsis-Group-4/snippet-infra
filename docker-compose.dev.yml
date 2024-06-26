@@ -27,8 +27,6 @@ services:
       DB_NAME: ${PERMISSION_POSTGRES_DB}
       DB_HOST: ${PERMISSION_DB_HOST}
       DB_PORT: ${PERMISSION_DB_PORT}
-    env_file:
-      - .env
     depends_on:
       - permissions-db
     expose:
@@ -45,8 +43,6 @@ services:
       - "5432:5432"
     volumes:
       - permissions-db:/var/lib/postgresql/data
-    env_file:
-      - .env
     expose:
       - "5432"
 
@@ -63,10 +59,13 @@ services:
         SNIPPET_RUNNER_SERVICE_URL: ${SNIPPET_RUNNER_SERVICE_URL}
         REDIS_PORT: 6379
         REDIS_HOST: redis
+        REDIS_STREAM_REQUEST_LINT_KEY: request_lint
+        REDIS_STREAM_RESULT_LINT_KEY: result_lint
+        REDIS_STREAM_GROUP_LINT: lint_group
+        AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
+        PERMISSION_SNIPPET_SERVICE_URL: ${PERMISSION_SNIPPET_SERVICE_URL}
     volumes:
       - ./data:/app/data
-    env_file:
-      - .env
     expose:
       - "4322"
 
@@ -101,8 +100,6 @@ services:
       - "5433:5432"
     volumes:
       - manager-db:/var/lib/postgresql/data
-    env_file:
-      - .env
     expose:
       - "5432"
 
@@ -113,8 +110,13 @@ services:
       - 8080
     volumes:
       - .:/app/data
-    env_file:
-      - .env
+    environment:
+      REDIS_PORT: 6379
+      REDIS_HOST: redis
+      REDIS_STREAM_REQUEST_LINT_KEY: request_lint
+      REDIS_STREAM_RESULT_LINT_KEY: result_lint
+      REDIS_STREAM_GROUP_LINT: lint_group
+      AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
 
   duckdns:
     image: lscr.io/linuxserver/duckdns:version-d63af1c1
