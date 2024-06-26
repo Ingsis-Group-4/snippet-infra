@@ -137,7 +137,7 @@ services:
 
   printscript-ui:
     container_name: "printscript-ui"
-    image: ghcr.io/ingsis-group-4/printscript-ui-main:ae07716a
+    image: ghcr.io/ingsis-group-4/printscript-ui-main:4f5f2e6f
     expose:
       - "80"
 
