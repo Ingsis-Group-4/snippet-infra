@@ -64,6 +64,7 @@ services:
         REDIS_STREAM_GROUP_LINT: lint_group
         AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
         PERMISSION_SNIPPET_SERVICE_URL: ${PERMISSION_SNIPPET_SERVICE_URL}
+        AUTH0_MANAGING_TOKEN: ${AUTH0_MANAGING_TOKEN}
     volumes:
       - ./data:/app/data
     expose:
