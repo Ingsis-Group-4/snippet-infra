@@ -9,7 +9,7 @@ jobs:
     name: Update Infrastructure
     runs-on: ubuntu-latest
     steps:
-      - name: Stop running containers
+      - name: Update and Restart Infrastructure
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.PROD_URL }}
@@ -17,24 +17,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd snippet-infra
-            docker compose stop
-
-      - name: Pull latest code
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_URL }}
-          username: "snippet-searcher-admin"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd snippet-infra
+            docker compose down
             git pull
-
-      - name: Start containers
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_URL }}
-          username: "snippet-searcher-admin"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd snippet-infra
             docker compose up -d --build
