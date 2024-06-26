@@ -61,6 +61,8 @@ services:
         DB_HOST: ${MANAGER_DB_HOST}
         DB_PORT: ${MANAGER_DB_PORT}
         SNIPPET_RUNNER_SERVICE_URL: ${SNIPPET_RUNNER_SERVICE_URL}
+        REDIS_PORT: 6379
+        REDIS_HOST: redis
     volumes:
       - ./data:/app/data
     env_file:
@@ -130,7 +132,18 @@ services:
       - ./certbot/www:/var/www/certbot
     command: certonly --webroot -w /var/www/certbot/ --force-renewal --email ${CERTBOT_EMAIL} -d ${CERTBOT_DOMAIN} --agree-tos
 
+  printscript-ui:
+    container_name: "printscript-ui"
+    image: ghcr.io/ingsis-group-4/printscript-ui-dev:latest
+    expose:
+      - "80"
 
+  redis:
+    container_name: "redis"
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+      
 volumes:
   permissions-db:
   manager-db:

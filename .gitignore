@@ -31,3 +31,6 @@ replay_pid*
 
 # IntelliJ
 .idea/
+.env_ui
+
+certbot
