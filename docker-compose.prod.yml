@@ -34,7 +34,7 @@ services:
 
   permissions-db:
     container_name: "permissions-db"
-    image: postgres:latest
+    image: postgres:13-bookworm
     environment:
       POSTGRES_DB: ${PERMISSION_POSTGRES_DB}
       POSTGRES_USER: ${PERMISSION_POSTGRES_USER}
@@ -72,7 +72,7 @@ services:
 
   api-manager:
     container_name: "asset_service"
-    image: ghcr.io/austral-ingsis/snippet-asset-service:latest
+    image: ghcr.io/austral-ingsis/snippet-asset-service:main.9
     ports:
       - "8081:8080"
     environment:
@@ -92,7 +92,7 @@ services:
 
   manager-db:
     container_name: "manager-db"
-    image: postgres:latest
+    image: postgres:13-bookworm
     environment:
       POSTGRES_DB: ${MANAGER_POSTGRES_DB}
       POSTGRES_USER: ${MANAGER_POSTGRES_USER}
@@ -129,7 +129,7 @@ services:
 
   certbot:
     container_name: "certbot"
-    image: certbot/certbot:latest
+    image: certbot/certbot:v2.11.0
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -148,7 +148,7 @@ services:
       - "6379:6379"
       
   newrelic:
-    image: newrelic/infrastructure:latest
+    image: newrelic/infrastructure:1.53.0
     container_name: newrelic
     network_mode: host
     environment:
