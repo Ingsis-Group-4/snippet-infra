@@ -29,6 +29,8 @@ services:
       DB_PORT: ${PERMISSION_DB_PORT}
       AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+      NEW_RELIC_APP_NAME: Snippet Permissions Prod
     depends_on:
       - permissions-db
     expose:
@@ -69,6 +71,8 @@ services:
         AUTH0_MANAGING_TOKEN: ${AUTH0_MANAGING_TOKEN}
         AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
         AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+        NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+        NEW_RELIC_APP_NAME: Snippet Manager Prod
     volumes:
       - ./data:/app/data
     expose:
@@ -124,6 +128,8 @@ services:
       AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
       AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+      NEW_RELIC_APP_NAME: Snippet Runner Prod
 
   duckdns:
     image: lscr.io/linuxserver/duckdns:version-d63af1c1
@@ -152,20 +158,8 @@ services:
     image: redis:6-alpine
     ports:
       - "6379:6379"
-      
-  newrelic:
-    image: newrelic/infrastructure:1.53.0
-    container_name: newrelic
-    network_mode: host
-    environment:
-      NRIA_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
-      NRIA_DISPLAY_NAME: Infrastructure_prod
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/proc:/host/proc:ro"
-      - "/sys:/host/sys:ro"
-      - "/:/host/rootfs:ro"
-      
+
+
 volumes:
   permissions-db:
   manager-db:
