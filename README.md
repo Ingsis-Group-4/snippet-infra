@@ -16,4 +16,3 @@ Para construir y levantar todos los servicios, ejecuta el siguiente comando en l
 
 ```bash
 docker-compose up --build
-
