@@ -20,7 +20,7 @@ services:
         - duckdns
   snippet-permission:
     container_name: "snippet-permission"
-    image: ghcr.io/ingsis-group-4/snippet-permission-main:ec961b3f
+    image: ghcr.io/ingsis-group-4/snippet-permission-main:b01ee5da
     environment:
       DB_USERNAME: ${PERMISSION_POSTGRES_USER}
       DB_PASSWORD: ${PERMISSION_POSTGRES_PASSWORD}
@@ -49,7 +49,7 @@ services:
 
   snippet-manager:
     container_name: "snippet-manager"
-    image: ghcr.io/ingsis-group-4/snippet-manager-main:e7ba2bd1
+    image: ghcr.io/ingsis-group-4/snippet-manager-main:16f41f1b
     environment:
         DB_USERNAME: ${MANAGER_POSTGRES_USER}
         DB_PASSWORD: ${MANAGER_POSTGRES_PASSWORD}
@@ -106,7 +106,7 @@ services:
 
   snippet-runner:
     container_name: "snippet-runner"
-    image: ghcr.io/ingsis-group-4/snippet-runner-main:fdfff9b9
+    image: ghcr.io/ingsis-group-4/snippet-runner-main:2c796089
     expose:
       - 8080
     volumes:
