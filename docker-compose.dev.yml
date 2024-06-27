@@ -159,4 +159,3 @@ volumes:
   permissions-db:
   manager-db:
   blob:
-    external: false
