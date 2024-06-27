@@ -20,13 +20,15 @@ services:
         - duckdns
   snippet-permission:
     container_name: "snippet-permission"
-    image: ghcr.io/ingsis-group-4/snippet-permission-main:ec961b3f
+    image: ghcr.io/ingsis-group-4/snippet-permission-main:b01ee5da
     environment:
       DB_USERNAME: ${PERMISSION_POSTGRES_USER}
       DB_PASSWORD: ${PERMISSION_POSTGRES_PASSWORD}
       DB_NAME: ${PERMISSION_POSTGRES_DB}
       DB_HOST: ${PERMISSION_DB_HOST}
       DB_PORT: ${PERMISSION_DB_PORT}
+      AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
       NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
       NEW_RELIC_APP_NAME: Snippet Permissions Prod
     depends_on:
@@ -51,7 +53,7 @@ services:
 
   snippet-manager:
     container_name: "snippet-manager"
-    image: ghcr.io/ingsis-group-4/snippet-manager-main:e7ba2bd1
+    image: ghcr.io/ingsis-group-4/snippet-manager-main:16f41f1b
     environment:
         DB_USERNAME: ${MANAGER_POSTGRES_USER}
         DB_PASSWORD: ${MANAGER_POSTGRES_PASSWORD}
@@ -67,6 +69,8 @@ services:
         AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
         PERMISSION_SNIPPET_SERVICE_URL: ${PERMISSION_SNIPPET_SERVICE_URL}
         AUTH0_MANAGING_TOKEN: ${AUTH0_MANAGING_TOKEN}
+        AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
+        AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
         NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
         NEW_RELIC_APP_NAME: Snippet Manager Prod
     volumes:
@@ -112,7 +116,7 @@ services:
 
   snippet-runner:
     container_name: "snippet-runner"
-    image: ghcr.io/ingsis-group-4/snippet-runner-main:fdfff9b9
+    image: ghcr.io/ingsis-group-4/snippet-runner-main:2c796089
     expose:
       - 8080
     volumes:
@@ -124,6 +128,8 @@ services:
       REDIS_STREAM_RESULT_LINT_KEY: result_lint
       REDIS_STREAM_GROUP_LINT: lint_group
       AZURITE_BUCKET_URL_V1: ${AZURITE_BUCKET_URL_V1}
+      AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
       NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
       NEW_RELIC_APP_NAME: Snippet Runner Prod
 
@@ -145,7 +151,7 @@ services:
 
   printscript-ui:
     container_name: "printscript-ui"
-    image: ghcr.io/ingsis-group-4/printscript-ui-main:ae07716a
+    image: ghcr.io/ingsis-group-4/printscript-ui-main:4f5f2e6f
     expose:
       - "80"
 
@@ -154,20 +160,8 @@ services:
     image: redis:6-alpine
     ports:
       - "6379:6379"
-      
-  newrelic:
-    image: newrelic/infrastructure:1.53.0
-    container_name: newrelic
-    network_mode: host
-    environment:
-      NRIA_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
-      NRIA_DISPLAY_NAME: Infrastructure_prod
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/proc:/host/proc:ro"
-      - "/sys:/host/sys:ro"
-      - "/:/host/rootfs:ro"
-      
+
+
 volumes:
   permissions-db:
   manager-db:
